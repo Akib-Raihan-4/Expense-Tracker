@@ -1,6 +1,7 @@
 
 import './App.css';
 import ChartComp from './components/chartComp';
+import Form from './components/form';
 
 
 function App() {
@@ -12,9 +13,9 @@ function App() {
         {/* grid columns */}
         <div className='grid md:grid-cols-2 gap-4'>
           {/* Char */}
-          {/* Form */}
           <ChartComp/>
-
+          {/* Form */}
+          <Form/>
         </div>
 
       </div>
