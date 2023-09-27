@@ -43,10 +43,66 @@ async function createTransaction(req, res) {
     } catch (error) {
       return res.status(500).json({ error: "Internal server error" });
     }
-  }
+}
+
+async function getTransaction(req, res){
+    let data = await model.Transaction.find({})
+    return res.json(data)
+}
+
+async function deleteTransaction(req, res) {
+    try {
+      if (!req.body) {
+        return res.status(400).json({ message: "Request body not found" });
+      }
+      const deleteQuery = req.body; 
+  
+      const deletionResult = await model.Transaction.deleteOne(deleteQuery);
+  
+      if (deletionResult.deletedCount === 1) {
+        return res.json({ message: "Record Deleted" });
+      } else {
+        return res.status(404).json({ message: "Record not found" });
+      }
+    } catch (error) {
+      return res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+async function getLabels(req, res) {
+    try {
+      const result = await model.Transaction.aggregate([
+        {
+          $lookup: {
+            from: "categories",
+            localField: "type",
+            foreignField: "type",
+            as: "categoriesInfo",
+          },
+        },
+        {
+          $unwind: "$categoriesInfo",
+        },
+      ]);
+  
+      let data = result.map(v=>Object.assign({},{
+        _id:v._id,
+        name:v.name,
+        type:v.type,
+        amount:v.amount,
+        color:v.categoriesInfo['color']
+      }))
+      res.json(data)
+    } catch (error) {
+      res.status(400).json({ error: "Lookup Collection Error" });
+    }
+}
 
 module.exports= {
     createCategories,
     getCategories,
-    createTransaction
+    createTransaction,
+    getTransaction,
+    deleteTransaction, 
+    getLabels
 }
