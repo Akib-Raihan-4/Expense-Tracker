@@ -1,4 +1,6 @@
 import React from 'react'
+import {default as api} from '../store/apiSlice'
+
 
 const obj = [
     {
@@ -19,9 +21,21 @@ const obj = [
 ]
 
 export default function Labels() {
+
+    const {data, isFetching, isSuccess, isError} = api.useGetLabelsQuery()
+    // console.log(data)
+    let Transactions
+
+    if(isFetching){
+        Transactions= <div>Fetching</div>
+    }else if(isSuccess){
+        Transactions = data.map((v,i)=> <LableComponent key={i} data={v}/>)
+    }else if(isError){
+        Transactions = <div>Error</div>
+    }
   return (
     <>
-        {obj.map((v,i)=> <LableComponent key={i} data={v}/>)}
+        {Transactions}
     </>
   )
 }
