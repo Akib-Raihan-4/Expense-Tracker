@@ -3,6 +3,8 @@ import { Chart, ArcElement } from 'chart.js'
 import {Doughnut} from 'react-chartjs-2'
 import './charComp.css'
 import Labels from './labels'
+import { chart_Data } from '../helper/helper'
+import {default as api} from '../store/apiSlice'
 
 Chart.register(ArcElement)
 
@@ -28,6 +30,19 @@ const config ={
 }
 
 export default function ChartComp() {
+  const {data, isFetching, isSuccess, isError} = api.useGetLabelsQuery()
+    // console.log(data)
+    let graphData
+
+    if(isFetching){
+        graphData= <div>Fetching</div>
+    }else if(isSuccess){
+      chart_Data(data)
+        
+      // graphData = getLabels(data, 'type').map((v,i)=> <LableComponent key={i} data={v}/>)
+    }else if(isError){
+        graphData = <div>Error</div>
+  }
   return (
     <div className='flex max-w-xs mx-auto'>
         <div className='item'>
