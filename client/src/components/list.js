@@ -19,7 +19,6 @@ export default function List() {
     <div className='flex flex-col py-6 gap-3'>
         <h1 className='py-4 text-md font-bold text-xl'>History</h1>
         {Transactions}
-        
     </div>
   )
 }

@@ -2,12 +2,16 @@ import React from 'react'
 import './charComp.css'
 import {useForm} from 'react-hook-form'
 import List from './list'
+import {default as api} from '../store/apiSlice'
 
 export default function Form() {
 
     const{register, handleSubmit, resetField} = useForm()
-    const onSubmit = (data) =>{
-        console.log(data)
+    const [addTransaction] = api.useAddTransactionMutation()
+
+    const onSubmit = async(data) =>{
+        if(!data)return {}
+        await addTransaction(data).unwrap()
     }
   return (
     <div className='form max-w-sm mx-auto w-96'>
