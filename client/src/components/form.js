@@ -12,6 +12,8 @@ export default function Form() {
     const onSubmit = async(data) =>{
         if(!data)return {}
         await addTransaction(data).unwrap()
+        resetField("name")
+        resetField("amount")
     }
   return (
     <div className='form max-w-sm mx-auto w-96'>
