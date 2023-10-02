@@ -25,19 +25,15 @@ export function getLabels(transaction){
     return percent
 }
 
-export function chart_Data(transaction){
+export function chart_Data(transaction, custom){
     let dataValue = getSum(transaction)
     let bg = _.map(transaction,a =>a.color)
     bg = _.uniq(bg)
     const config ={
         data:{
           datasets: [{
-            data: [300, 50, 100],
-            backgroundColor: [
-              'rgb(255, 99, 132)',
-              'rgb(54, 162, 235)',
-              'rgb(255, 205, 86)'
-            ],
+            data: dataValue,
+            backgroundColor: bg,
             hoverOffset: 4,
             borderRadius: 10,
             spacing: 10
@@ -46,5 +42,10 @@ export function chart_Data(transaction){
         options:{
           cutout:110
         }
-      }
+    }
+    return custom??config
+}
+
+export function getTotal(transaction){
+    return _.sum(getSum(transaction))
 }
